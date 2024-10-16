@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey900"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/pantalla"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="0"
+        android:textSize="100sp"
+        android:background="@color/yellow100"
+        android:textColor="@color/lightBlue900"
+        android:gravity="right|bottom"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/uno"
+        style="@style/BotonRecto"
+        android:text="1"
+        app:layout_constraintBottom_toTopOf="@id/cuatro"
+        app:layout_constraintEnd_toStartOf="@id/dos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/cuatro"
+        style="@style/BotonRecto"
+        android:text="4"
+        app:layout_constraintBottom_toTopOf="@id/siete"
+        app:layout_constraintEnd_toStartOf="@id/cinco"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uno" />
+
+    <Button
+        android:id="@+id/siete"
+        style="@style/BotonRecto"
+        android:text="7"
+        app:layout_constraintBottom_toTopOf="@id/cero"
+        app:layout_constraintEnd_toStartOf="@id/ocho"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cuatro" />
+
+    <Button
+        android:id="@+id/dos"
+        style="@style/BotonRecto"
+        android:text="2"
+        app:layout_constraintBottom_toTopOf="@id/cinco"
+        app:layout_constraintEnd_toStartOf="@id/tres"
+        app:layout_constraintStart_toEndOf="@id/uno"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/cinco"
+        style="@style/BotonRecto"
+        android:text="5"
+        app:layout_constraintBottom_toTopOf="@id/ocho"
+        app:layout_constraintEnd_toStartOf="@id/seis"
+        app:layout_constraintStart_toEndOf="@id/cuatro"
+        app:layout_constraintTop_toBottomOf="@id/dos" />
+
+    <Button
+        android:id="@+id/ocho"
+        style="@style/BotonRecto"
+        android:text="8"
+        app:layout_constraintBottom_toBottomOf="@id/cero"
+        app:layout_constraintEnd_toStartOf="@id/nueve"
+        app:layout_constraintStart_toEndOf="@id/siete"
+        app:layout_constraintTop_toBottomOf="@id/cinco" />
+
+    <Button
+        android:id="@+id/tres"
+        style="@style/BotonRecto"
+        android:text="3"
+        app:layout_constraintBottom_toTopOf="@id/seis"
+        app:layout_constraintEnd_toStartOf="@id/resta"
+        app:layout_constraintStart_toEndOf="@id/dos"
+        app:layout_constraintTop_toTopOf="@+id/guideline"/>
+
+    <Button
+        android:id="@+id/seis"
+        style="@style/BotonRecto"
+        android:text="6"
+        app:layout_constraintBottom_toTopOf="@id/nueve"
+        app:layout_constraintEnd_toStartOf="@id/division"
+        app:layout_constraintStart_toEndOf="@id/cinco"
+        app:layout_constraintTop_toBottomOf="@id/tres" />
+
+    <Button
+        android:id="@+id/nueve"
+        style="@style/BotonRecto"
+        android:text="9"
+        app:layout_constraintBottom_toTopOf="@id/cero"
+        app:layout_constraintEnd_toStartOf="@id/reset"
+        app:layout_constraintStart_toEndOf="@id/ocho"
+        app:layout_constraintTop_toBottomOf="@id/seis" />
+
+    <Button
+        android:id="@+id/cero"
+        style="@style/BotonRecto"
+        android:text="0"
+        android:layout_marginEnd="11dp"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/decimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ocho" />
+
+    <Button
+        android:id="@+id/decimal"
+        style="@style/BotonRecto"
+        android:text="."
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/nueve"
+        app:layout_constraintStart_toStartOf="@id/nueve"
+        app:layout_constraintTop_toBottomOf="@id/ocho" />
+
+    <Button
+        android:id="@+id/suma"
+        style="@style/BotonRecto"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@id/multiplicaicon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/resta"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/resta"
+        style="@style/BotonRecto"
+        android:text="-"
+        app:layout_constraintBottom_toTopOf="@id/division"
+        app:layout_constraintEnd_toStartOf="@id/suma"
+        app:layout_constraintStart_toEndOf="@id/tres"
+        app:layout_constraintTop_toTopOf="@id/guideline" />
+
+    <Button
+        android:id="@+id/multiplicaicon"
+        style="@style/BotonRecto"
+        android:text="*"
+        app:layout_constraintBottom_toTopOf="@id/igual"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/division"
+        app:layout_constraintTop_toBottomOf="@id/suma" />
+
+    <Button
+        android:id="@+id/division"
+        style="@style/BotonRecto"
+        android:text="/"
+        app:layout_constraintBottom_toTopOf="@id/reset"
+        app:layout_constraintEnd_toStartOf="@id/multiplicaicon"
+        app:layout_constraintStart_toEndOf="@id/seis"
+        app:layout_constraintTop_toBottomOf="@id/resta" />
+
+    <Button
+        android:id="@+id/igual"
+        style="@style/BotonRecto"
+        android:text="="
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/reset"
+        app:layout_constraintTop_toBottomOf="@id/multiplicaicon" />
+
+    <Button
+        android:id="@+id/reset"
+        style="@style/BotonRecto"
+        android:text="C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/igual"
+        app:layout_constraintStart_toEndOf="@id/nueve"
+        app:layout_constraintTop_toBottomOf="@id/division" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25171" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
