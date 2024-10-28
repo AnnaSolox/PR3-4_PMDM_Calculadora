@@ -13,15 +13,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Anna soler
+ * @version v2.0.0
+ * @since v1.0.0
+ */
 
 public class MainActivity extends AppCompatActivity {
 
     String textoBotones = "";
-    Boolean decimal = false;
+    boolean decimal = false;
     String numeroDecimal = "";
+    boolean resultadoEnPantalla = false;
+    String numeroPantalla = "";
 
 
     @Override
@@ -54,36 +61,59 @@ public class MainActivity extends AppCompatActivity {
             try {
                 if (idb == R.id.reset) {
                     textoBotones = "";
+                    numeroPantalla = "0";
                     pantalla.setText("0");
                     decimal = false;
-                    numeroDecimal="";
+                    numeroDecimal = "";
+                    resultadoEnPantalla = false;
                 } else if (idb == R.id.igual) {
-                    String calculo = calculate(textoBotones);
+                    String calculo = Calculator.calcular(textoBotones);
                     pantalla.setText(calculo);
+                    numeroPantalla = calculo;
                     textoBotones = calculo;
                     decimal = false;
-                    numeroDecimal="";
+                    numeroDecimal = "";
+                    resultadoEnPantalla = true;
                 } else if (idb == R.id.suma || idb == R.id.resta || idb == R.id.multiplicaicon || idb == R.id.division) {
+                    if (resultadoEnPantalla) resultadoEnPantalla = false;
+
+                    if ((textoBotones.equals("") || Calculator.esOperador(textoBotones.charAt(textoBotones.length()-1))) && idb == R.id.resta) {
+                        numeroPantalla = "-";
+                        pantalla.setText(numeroPantalla);
+                    } else {
+                        numeroPantalla = "";
+                    }
                     textoBotones += b.getText();
                     decimal = false;
-                    numeroDecimal="";
+                    numeroDecimal = "";
                 } else if (idb == R.id.decimal) {
                     if (!textoBotones.isEmpty() && !decimal) {
-                        numeroDecimal = textoBotones.charAt(textoBotones.length() - 1) + ".";
+                        numeroDecimal = numeroPantalla + ".";
                         textoBotones += ".";
-                        pantalla.setText(numeroDecimal);
+                        pantalla.setText(numeroPantalla);
                         decimal = true;
                     }
                 } else {
-                    if (decimal)  {
+                    if (resultadoEnPantalla) {
+                        textoBotones = "";
+                        numeroPantalla = "";
+                        resultadoEnPantalla = false;
+                    }
+
+                    if (decimal) {
                         numeroDecimal += b.getText();
                         textoBotones += b.getText();
-                        pantalla.setText(numeroDecimal);
+                        numeroPantalla = numeroDecimal;
                     } else {
                         textoBotones += b.getText();
+                        numeroPantalla += b.getText();
+
                         pantalla.setText(b.getText());
                     }
+
+                    pantalla.setText(numeroPantalla);
                 }
+
             }
             //Excepción de dividir entre 0:
             catch (IllegalArgumentException e) {
@@ -93,67 +123,5 @@ public class MainActivity extends AppCompatActivity {
         }));
 
 
-    }
-
-    private String calculate(String calculo) {
-        calculo = calculo.trim();
-
-        if (calculo.isEmpty()) {
-            return "0";
-        }
-
-        if (!calculo.matches(".*[+\\-*/].*")) {
-            return String.valueOf(Double.parseDouble(calculo));
-        }
-
-        String parte1, parte2, operador;
-        String[] partes;
-
-        //Manejamos números negativos. Si empieza con "-", encuentra la segunda parte después del operador
-        if (calculo.startsWith("-")) {
-            partes = calculo.substring(1).split("(?<=[+*/])|(?=[+*/])", 2);
-            parte1 = "-" + partes[0];
-            parte2 = partes[1].trim();
-            operador = parte2.substring(0, 1);
-            parte2 = parte2.substring(1).trim();
-        } else {
-            partes = calculo.split("(?<=[-+*/])|(?=[-+*/])", 2);
-            parte1 = partes[0];
-            operador = partes[1].substring(0, 1);
-            parte2 = partes[1].substring(1);
-        }
-
-        double num1 = Double.parseDouble(parte1);
-        double num2 = Double.parseDouble(calculate(parte2));
-
-        switch (operador) {
-            case "+":
-                return formatoDecimalEntero(num1 + num2);
-            case "-":
-                return formatoDecimalEntero(num1 - num2);
-            case "*":
-                return formatoDecimalEntero(num1 * num2);
-            case "/":
-                //Manejamos la excepción de dividir por 0:
-                if (num2 == 0) {
-                    throw new IllegalArgumentException("División por cero no permitida");
-                }
-                return formatoDecimalEntero(num1 / num2);
-            default:
-                throw new IllegalArgumentException("Operador no válido");
-        }
-    }
-
-    private String formatoDecimalEntero(double calculo) {
-        if (calculo == (int) calculo) {
-            return String.format("%d", (int) calculo);
-        } else {
-            DecimalFormat df = new DecimalFormat("#.##");
-            return df.format(calculo);
-        }
-    }
-
-    private boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/';
     }
 }
