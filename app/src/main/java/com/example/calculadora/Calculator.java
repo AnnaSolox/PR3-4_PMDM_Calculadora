@@ -3,6 +3,9 @@ package com.example.calculadora;
 import java.text.DecimalFormat;
 
 /**
+ * La clase Calculatos contiene métodos estáticos que evaluan y calculan las expresiones matemáticas introducidas en la calculadora.
+ * Se respetan las jerarquías de los operadores (primero multiplicación y división y luego sumas y restas).
+ *
  * @author Anna Soler
  * @version v2.0.0
  * @since v2.0.0
@@ -12,9 +15,10 @@ public class Calculator {
 
     /**
      * Método recursivo que calcula las operaciones introducidas en la calculadora hasta que se hace clic en el botón igual.
+     * Cuando encuentra una suma o una resta, calcula las partes de multiplicación y división antes de continuar con la suma y la resta para respetar la jerarquía de las operaciones.
      *
      * @param calculo String de las operaciones a realizar
-     * @return resultado de las operaciones realizadas
+     * @return resultado de toda la expresión formateada según si es un entero o un decimal.
      */
     public static String calcular(String calculo) {
 
@@ -23,59 +27,84 @@ public class Calculator {
             return "0";
         }
 
-        // Separar el primer operador
-        StringBuilder parte1str = new StringBuilder();
-        StringBuilder parte2str = new StringBuilder();
-        String operador = "";
-        boolean operadorEncontrado = false;
+        return formatoDecimalEntero(comprobarSiSumaResta(calculo));
+    }
+
+    /**
+     * Comprueba la expresión y se queda con las sumas y las restas, considerando el orden de operación de izquierda a derecha.
+     * Cuando encuentra una una suma o resta, primero procesa cualquier multiplicación o división que aparezca dentro del fragmento que tiene a la izquierda de esa suma o resta.
+     * Así garantizamos que la jerarquía de los operadores se respeta.
+     * @param calculo String con la expresión que continene sumas y restas y, posiblemente, multiplicaciones y divisiones.
+     * @return Resultado de las sumas / restas.
+     */
+    public static double comprobarSiSumaResta(String calculo) {
+        double resultado = 0;
+        StringBuilder parteActual = new StringBuilder();
+        char operador = '+';
+
+        for (int i = 0; i < calculo.length(); i++) {
+            char c = calculo.charAt(i);
+            if ((c == '-' && (parteActual.length() == 0 || esOperador(calculo.charAt(i - 1)))) ||
+                    (c == '+' && (parteActual.length() == 0 || esOperador(calculo.charAt(i - 1))))) {
+                parteActual.append(c);}
+            else if (c == '+' || (c == '-' && i > 0 && calculo.charAt(i-1) != '*' && calculo.charAt(i-1) != '/')) {
+                resultado = realizarOperacion(resultado, operador, comprobarSiMultDiv(parteActual.toString()));
+                operador = c;
+                parteActual = new StringBuilder();
+            } else {
+                parteActual.append(c);
+            }
+        }
+
+        return realizarOperacion(resultado,operador,comprobarSiMultDiv(parteActual.toString()));
+    }
+
+    /**
+     * Comprueba que la expresión del String solo tiene multiplicaciones y divisiones.
+     * Realiza las operaciones de izquierda a derecha.
+     * @param calculo String con la expresión de las multiplicaciones y divisiones
+     * @return Resultado de las multiplicaciones / divisiones.
+     */
+    private static double comprobarSiMultDiv(String calculo) {
+        double resultado = 1;
+        StringBuilder parteActual = new StringBuilder();
+        char operador = '*';
 
         for (int i = 0; i < calculo.length(); i++) {
             char c = calculo.charAt(i);
 
-            if (!operadorEncontrado) {
-                // Manejar el signo negativo
-                if ((parte1str.length() == 0 && c == '-') ||
-                        (parte1str.length() > 0 && esOperador(calculo.charAt(i - 1)) && c == '-')) {
-                    parte1str.append(c);
-                } else if (esOperador(c)) {
-                    operador = String.valueOf(c);
-                    operadorEncontrado = true;
-                } else {
-                    parte1str.append(c);
-                }
+            if(c == '*' || c == '/') {
+                resultado = realizarOperacion(resultado,operador, Double.parseDouble(parteActual.toString()));
+                operador = c;
+                parteActual = new StringBuilder();
             } else {
-                parte2str.append(c);
+                parteActual.append(c);
             }
         }
 
-        // Convertir partes a String y limpiar espacios
-        String parte1 = parte1str.toString().trim();
-        String parte2 = parte2str.toString().trim();
+        return realizarOperacion(resultado, operador, Double.parseDouble(parteActual.toString()));
+    }
 
-        // Si no hay parte 2 (caso de solo un número)
-        if (parte2.isEmpty()) {
-            return String.valueOf(Double.parseDouble(parte1));
-        }
-
-        // Convertimos las partes en double para poder ejecutar las operaciones
-        double num1 = Double.parseDouble(parte1);
-        double num2 = Double.parseDouble(calcular(parte2));
-
-
+    /**
+     * Realizar operación según el operador encontrado
+     * @param num1 Primer número de la operación
+     * @param operador determina la operación a realizar
+     * @param num2 Segundo número de la operación
+     * @return operación realizada
+     * @throws IllegalArgumentException Si el operador no es válido o intentamos dividir entre 0
+     */
+    private static double realizarOperacion(double num1, char operador, double num2) {
         //devolvemos la operación correspondiente al operador encontrado
         switch (operador) {
-            case "+":
-                return formatoDecimalEntero(num1 + num2);
-            case "-":
-                return formatoDecimalEntero(num1 - num2);
-            case "*":
-                return formatoDecimalEntero(num1 * num2);
-            case "/":
+            case '+': return num1 + num2;
+            case '-': return num1 - num2;
+            case '*': return num1 * num2;
+            case '/':
                 //Manejamos la excepción de dividir por 0:
                 if (num2 == 0) {
                     throw new IllegalArgumentException("División por cero no permitida");
                 }
-                return formatoDecimalEntero(num1 / num2);
+                return num1 / num2;
             default:
                 throw new IllegalArgumentException("Operador no válido");
         }
