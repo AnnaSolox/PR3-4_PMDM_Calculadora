@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Clase principal de la calucladora en la que encontraremos la lógica de interfaz de usuario.
  * @author Anna soler
  * @version v2.0.0
  * @since v1.0.0

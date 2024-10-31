@@ -7,6 +7,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Clase de testing donde se comprueba que todas las operaciones funcionan de forma correcta.
+ */
 public class CalculatorTest {
     String total = "";
     String resultadoEsperado = "";
