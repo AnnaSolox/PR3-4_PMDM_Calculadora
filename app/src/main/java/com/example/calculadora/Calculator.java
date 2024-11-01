@@ -3,7 +3,7 @@ package com.example.calculadora;
 import java.text.DecimalFormat;
 
 /**
- * La clase Calculatos contiene métodos estáticos que evaluan y calculan las expresiones matemáticas introducidas en la calculadora.
+ * La clase Calculator contiene métodos estáticos que evaluan y calculan las expresiones matemáticas introducidas en la calculadora.
  * Se respetan las jerarquías de los operadores (primero multiplicación y división y luego sumas y restas).
  *
  * @author Anna Soler
@@ -37,7 +37,7 @@ public class Calculator {
      * @param calculo String con la expresión que continene sumas y restas y, posiblemente, multiplicaciones y divisiones.
      * @return Resultado de las sumas / restas.
      */
-    public static double comprobarSiSumaResta(String calculo) {
+    private static double comprobarSiSumaResta(String calculo) {
         double resultado = 0;
         StringBuilder parteActual = new StringBuilder();
         char operador = '+';
@@ -60,7 +60,7 @@ public class Calculator {
     }
 
     /**
-     * Comprueba que la expresión del String solo tiene multiplicaciones y divisiones.
+     * Comprueba que la expresión del String solo tiene multiplicacions y divisiones.
      * Realiza las operaciones de izquierda a derecha.
      * @param calculo String con la expresión de las multiplicaciones y divisiones
      * @return Resultado de las multiplicaciones / divisiones.
